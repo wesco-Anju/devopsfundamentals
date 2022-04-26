@@ -11,5 +11,6 @@ jobs:
       - run: npm install -g bats
       - run: bats -v
 
-/home/ec2-user/environment/devopsfundamentals/mvnw package
+cd /home/ec2-user/environment/devopsfundamentals
+./mvnw package
 java -jar target/*.jar
