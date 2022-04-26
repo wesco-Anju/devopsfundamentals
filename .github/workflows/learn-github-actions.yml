@@ -10,5 +10,5 @@ jobs:
           node-version: '14'
       - run: npm install -g bats
       - run: bats -v
-      - run: mvnw package
-      - run: java -jar target/*.jar
+#      - run: mvnw package
+#      - run: java -jar target/*.jar
