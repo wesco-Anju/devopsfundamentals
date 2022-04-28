@@ -33,3 +33,5 @@ jobs:
         with:
           name: jar-file
           path: deploy_artifacts.zip
+          
+      - run: ./mvnw test
