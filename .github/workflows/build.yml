@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0       
+          fetch-depth: 0
 
       - name: Set up JDK 11
         uses: actions/setup-java@v2
@@ -51,3 +51,31 @@ jobs:
 
       - name: Build with Maven Wrapper
         run: ./mvnw test
+
+upload:
+    runs-on: ubuntu-latest
+    needs: [test] # Verify the job name, make sure you specify the job that exists in your workflow 
+    env:
+      Region: us-east-1
+      S3Bucket: cnbdevopsfundamentals
+      S3Folder: githubactions2 #change the number to match with your team number
+    permissions:
+      id-token: write
+      contents: read
+      
+    steps:
+      - name: Download an artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: jar-file
+
+      - name: configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::286144240398:role/AssumeRoleForGithubUsers
+          aws-region: ${{ env.Region }}
+          
+      - name: deploy to S3
+        run: |
+          ls
+          aws s3 cp *.zip s3://${{ env.S3Bucket }}/${{ env.S3Folder }}/
